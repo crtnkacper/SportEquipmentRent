@@ -1,0 +1,33 @@
+﻿@model SportEquipmentRent.Models.SportEquipment
+
+@{
+    ViewData["Title"] = "Usuwanie";
+}
+
+<h1>Usuń</h1>
+
+<h3>Czy jesteś pewny, że chcesz usunąć sprzęt sportowy?</h3>
+<div>
+    <hr />
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Units)</th>
+                <th>Liczba dostępnych sztuk</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.Name)</td>
+                <td>@Html.DisplayFor(model => model.Units)</td>
+                <td>@Model.AvaibleUnits()</td>
+            </tr>
+        </tbody>
+    </table>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Usuń" class="btn btn-danger" /> 
+        <a class="btn btn-warning" asp-action="Index">Powrót do listy</a>
+    </form>
+</div>

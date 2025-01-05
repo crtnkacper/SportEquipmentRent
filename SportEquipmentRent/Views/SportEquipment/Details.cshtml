@@ -1,0 +1,33 @@
+﻿@model SportEquipmentRent.Models.SportEquipment
+
+@{
+    ViewData["Title"] = "Szczegóły";
+}
+
+<h1>Szczegóły</h1>
+
+<div>
+    <h4>Sprzęt sportowy</h4>
+    <hr />
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Units)</th>
+                <th>Liczba dostępnych sztuk</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.Name)</td>
+                <td>@Html.DisplayFor(model => model.Units)</td>
+                <td>@Model.AvaibleUnits()</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edytuj</a> 
+    <a class="btn btn-outline-secondary" asp-action="Index">Powrót do listy</a>
+</div>

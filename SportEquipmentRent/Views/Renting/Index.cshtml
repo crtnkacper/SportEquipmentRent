@@ -1,0 +1,110 @@
+﻿@model IEnumerable<SportEquipmentRent.Models.Renting>
+
+@{
+    if(User.IsInRole("User") )
+    {
+        ViewData["Title"] = "Moje wypożyczenia";
+
+    }
+    else if (User.IsInRole("Admin"))
+    {
+        ViewData["Title"] = "Wypożyczenia";
+
+    }
+}
+<h1>@ViewData["Title"] </h1>
+
+@if(User.IsInRole("User"))
+{
+    <p>
+        <a class="btn btn-success" asp-action="Create">Wypożycz sprzęt</a>
+    </p>
+}
+
+<table class="table table-hover table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.Start)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.End)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SportEquipment)
+            </th>
+            <th style="width: 20%;">Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @if (item.User != null)
+                        {
+                            @Html.DisplayFor(modelItem => item.User.UserName)
+                        }
+                        else
+                        {
+                            <span class="text-muted">BRAK</span>
+                        }
+                    </td>
+                }
+                <td>@item.Start.ToShortDateString()</td>
+                <td>@item.End.ToShortDateString()</td>
+                <td>@Html.DisplayFor(modelItem => item.SportEquipment.Name)</td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </a>
+                        <a class="btn btn-secondary btn-sm" asp-action="Details" asp-route-id="@item.Id">
+                            <i class="fas fa-info-circle"></i> Szczegóły
+                        </a>
+
+                    }
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">
+                        <i class="fas fa-trash-alt"></i> Usuń
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<style>
+    .table {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .text-muted {
+        color: #6c757d;
+    }
+
+    .btn {
+        margin-right: 5px;
+    }
+
+</style>

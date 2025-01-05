@@ -1,0 +1,106 @@
+﻿@model IEnumerable<SportEquipmentRent.Models.SportEquipment>
+
+@{
+    ViewData["Title"] = "Sprzęt sportowy do wypożyczenia";
+}
+
+<h1>Sprzęt sportowy do wypożyczenia</h1>
+
+@if(User.IsInRole("Admin"))
+{
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Utwórz nowy</a>
+    </p>
+}
+
+<table class="table table-hover table-striped table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Units)
+            </th>
+            <th>
+                Dostępne sztuki
+            </th>
+            <th style="width: 20%;">Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Units)
+                </td>
+                <td>
+                    @if (item.AvaibleUnits() > 0)
+                    {
+                        @item.AvaibleUnits()
+                    }
+                    else
+                    {
+                        <span class="text-muted">Brak dostępnych sztuk</span>
+                    }
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="fas fa-edit"></i> Edytuj
+                        </a>
+                        <a class="btn btn-secondary btn-sm" asp-action="Details" asp-route-id="@item.Id">
+                            <i class="fas fa-info-circle"></i> Szczegóły
+                        </a>
+                        <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">
+                            <i class="fas fa-trash-alt"></i> Usuń
+                        </a>
+                    }
+                    else if (User.IsInRole("User"))
+                    {
+                        if (item.AvaibleUnits() > 0)
+                        {
+                            <a class="btn btn-success btn-sm" asp-action="Create" asp-controller="Renting" asp-route-eqId="@item.Id">
+                                <i class="fas fa-plus-circle"></i> Wypożycz
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Brak możliwości wypożyczenia</span>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<style>
+    .table {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .text-muted {
+        color: #6c757d;
+    }
+
+    .btn {
+        margin-right: 5px;
+    }
+
+</style>

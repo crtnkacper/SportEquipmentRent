@@ -17,7 +17,7 @@ namespace SportEquipmentRent.Models
         [Display(Name = "Liczba dostępnycgh sztuk")]
         public int AvaibleUnits()
         {
-            int currentRents = Rentings.Where(x => x.End >= DateTime.UtcNow).Count();
+            int currentRents = Rentings.Where(x => x.End.Date >= DateTime.UtcNow.Date).Count();
 
             return Units - currentRents;
         }
